@@ -1,0 +1,118 @@
+#include<iostream>
+bool game_over(char board[3][3]);
+void start(char player_token[]);
+void print_tokens(char player_token[]);
+int get_place();
+void draw(char board[3][3]);
+bool verify_place(char *board,int place);
+void update_board(char board[],int place,char player);
+void next_player(int current_player);
+int main()
+{
+	const size_t array_dim = 3;
+	char board[array_dim][array_dim] {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+	char player_token[3] = {'o','x','\0'};
+	int current_player = 0;/////
+	int place;
+	char player[2];
+	start(player_token);
+	print_tokens(player_token);
+    while(!game_over(board))
+    {
+		draw(board);
+
+		place = get_place();
+		//if(current_player %2 == 0)
+
+		if(verify_place(&board[0][0],place))
+		{
+			std::cout << "That location is already taken, try again.\n\n";
+			std::cin.ignore();///
+		}
+		else
+		{
+			update_board(&board[0][0],place,player[current_player]);
+			next_player(current_player);
+			std::cin.ignore();
+		}
+    }
+}
+void start(char player_token[])
+{
+    char token = 'q';
+    while(!(token == 'x' || token == 'o'))
+    {
+        std::cout <<  "********TIC TAC TOE********\n\nSelect your token (x OR o):\n";
+        std::cin >> token;
+        // Force the token to always be lowercase, change to toupper() if you want upper case.
+        token = tolower(token);
+    }
+    player_token[0] = token;
+    player_token[1] = token == 'x' ? 'o' : 'x'; // Don't forget to change this if you desire uppercase tokens.
+}
+void print_tokens(char player_token[])
+{
+    std::cout << "Player one is " << player_token[0];
+    std::cout << " and player two is " << player_token[1];
+    std::cout << " player one goes first.\n";
+}
+bool game_over(char board[3][3])
+//verifies which player has 3 in a row
+{
+
+}
+bool verify_place(char *board,int place)
+//verifies if location on board is available
+{
+	if(board[place] != ' ')
+	{
+		return false;
+	}
+	board[place] = place;
+}
+int get_place()
+/*
+retrieves the location the player where the player wants to place his token.
+This function should only accept valid values (a number between 1 and 9)
+and it should return the number (modified to use as an index value
+(a number between 1 and 9). If the user keys in something other than an integer
+it will display the message "Enter a number from 1 to 9" ".
+*/
+{
+	int place = 0;
+	while(!(std::cin >> place && place >= 1 && place <= 9))
+//If input isn't an integer between 1 - 9
+	{
+		std:: cout << "Enter a number from 1 - 9\n" <<std::endl;//Displays whats permitted
+		std::cin >> place;//player enters numb
+		//std::cin.clear();
+		std::cin.ignore();
+	}
+	return place - 1;//if player enters whats permitted it returns it
+}
+void draw(char board[3][3])
+{
+    std::cout <<"\nThe game board\n " <<std::endl;
+    for(int row = 0; row < 3; row++)
+    {
+        for(int col = 0; col < 3;col++)
+        {
+            std::cout << board[row][col] << " ";
+        }
+    std::cout <<std::endl;
+    }
+    std::cout<<"\n" <<std::endl;
+}
+void update_board(char board[],int place,char player)
+// places the player's token on the board at the desired location.
+{
+	board[place] = player;
+}
+void next_player(int current_player)
+/*
+selects the next player, insuring that the value
+returned is within the bounds of the players[] array.
+*/
+{
+
+}
